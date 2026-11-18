@@ -1,0 +1,218 @@
+Installing Arch Linux on an External HDD/SSD – PS4 Linux Guide
+This guide explains how to install and boot Arch Linux on a Sony PlayStation 4 using external storage.
+
+The instructions are based on the PS4 Linux installation process and the following references:
+- Modded Warfare PS4 Linux tutorial
+- DionKill PS4 Linux setup documentation
+- PS4 Linux resources and documentation
+My tested setup:
+- Console: Sony PlayStation 4 Original (Fat)
+- Distribution: Arch Linux
+- Storage: USB flash drive
+- Result: Linux successfully boots on the PS4
+Note: My own installation was tested using a USB flash drive. This guide also describes a general external HDD/SSD installation. The HDD/SSD procedure has not been independently tested on my console.
+
+
+1. Requirements
+Before starting, prepare the following:
+- Sony PlayStation 4 compatible with the Linux exploit and payload you intend to use.
+- External HDD or SSD (USB 3.0 recommended).
+- USB flash drive for installation files.
+- Computer running Windows or Linux.
+- PS4 Linux kernel and initramfs files compatible with your PS4 firmware.
+- Linux distribution image or root filesystem (Arch Linux in this project).
+- PS4 Linux payload and installation scripts.
+- USB keyboard and mouse.
+- Internet connection (optional, but useful after installation).
+Important: Make sure all Linux files, payloads, kernel files and installation scripts belong to compatible versions. Mixing files from different releases can cause boot or installation problems.
+
+
+2. Prepare the installation USB
+1. Connect your USB flash drive to your computer.
+2. Back up any important files because the drive may need to be formatted.
+3. Format the USB drive using a filesystem supported by your PS4 Linux installation method, commonly FAT32.
+4. Create the required folder structure according to the installation package.
+5. Copy the required PS4 Linux installation files to the USB drive.
+Depending on the distribution and installation package, these files may include:
+- Linux kernel (bzImage)
+- Initial RAM filesystem (initramfs)
+- Linux root filesystem archive
+- Installation scripts
+- Boot configuration files
+Do not rename files unless the installation instructions for your particular package require it.
+3. Prepare the external HDD or SSD
+1. Connect the external HDD or SSD to your computer.
+2. Back up any important data.
+3. Identify the correct disk carefully.
+4. Create the partitions required by your installation method.
+A typical manual installation may use two partitions:
+Partition	Filesystem	Purpose
+Boot partition	FAT32	Boot files
+Root partition	EXT4	Arch Linux operating system
+
+Example partition layout:
+- Partition 1: 1 GB FAT32
+- Partition 2: Remaining space EXT4
+The exact layout depends on the installation script and Linux image you are using. If your installation package automatically partitions the external drive, follow its instructions instead of manually creating partitions.
+
+Warning: Selecting the wrong disk can permanently erase data. Double-check the disk identifier before formatting or partitioning.
+
+
+4. Install Arch Linux on the external drive
+There are two possible approaches, depending on the installation package.
+Method A: Using an installation script
+Some PS4 Linux packages provide scripts to automate the installation.
+1. Connect both the installation USB and the target external HDD/SSD.
+2. Boot into the Linux environment or installation environment required by your package.
+3. Locate the installation script.
+4. Check the script's instructions before running it.
+5. Identify the target external drive.
+6. Run the installation script using the correct target device.
+7. Wait for the installation process to finish.
+8. Verify that the Linux root filesystem and boot files have been installed correctly.
+For example, some packages may include scripts such as:
+install-linux-ext.sh
+
+
+The script name and usage depend on the particular PS4 Linux release. Do not assume this exact script exists in every package.
+Method B: Manual installation
+If your package requires manual installation:
+
+1. Identify the external drive:
+lsblk
+
+
+2. Confirm the correct drive and its partitions.
+
+
+3. Format the root partition as EXT4 if required by your installation method.
+Example:
+sudo mkfs.ext4 /dev/sdX2
+
+
+4. Mount the root partition:
+sudo mkdir -p /mnt/ps4linux
+sudo mount /dev/sdX2 /mnt/ps4linux
+
+
+5. Extract the Arch Linux root filesystem archive into the mounted partition.
+
+For a .tar.xz archive, an example command is:
+sudo tar -xJpf arch-linux-rootfs.tar.xz -C /mnt/ps4linux
+
+
+6. Install or copy the required boot files to the appropriate boot partition.
+7. Configure the boot process according to your PS4 Linux package.
+8. Unmount the partitions safely:
+sudo umount /mnt/ps4linux
+
+
+Important: The commands above are examples of a manual Linux filesystem installation. The actual partition identifiers, archive name, boot configuration and kernel files must match your installation package.
+
+
+5. Boot Linux on the PS4
+Once the external storage is prepared:
+1. Safely disconnect the external drive from your computer.
+2. Connect the external storage to the PS4.
+3. Connect a USB keyboard and mouse.
+4. Start the PS4 normally.
+5. Activate the compatible PS4 Linux exploit.
+6. Load the correct Linux payload for your console and firmware.
+7. Wait for the Linux boot process to begin.
+8. Follow any instructions displayed on the screen.
+If everything is configured correctly, the PS4 should boot into the Linux environment.
+
+The first boot may take longer than usual.
+
+
+6. Verify the Linux installation
+After Linux starts, open a terminal.
+
+Check the Linux distribution:
+cat /etc/os-release
+
+
+Check the kernel version:
+uname -a
+
+
+Check available storage:
+lsblk
+
+
+Check mounted filesystems:
+df -h
+
+
+Check memory:
+free -h
+
+
+These commands help confirm that Linux is running and that the external storage is accessible.
+
+
+7. Test the hardware
+After successfully booting Linux, test the following:
+- [ ] Linux boots successfully.
+- [ ] Keyboard works.
+- [ ] Mouse works.
+- [ ] Display resolution is correct.
+- [ ] USB ports work.
+- [ ] External storage is detected.
+- [ ] Network connection works, if configured.
+- [ ] Audio works, if supported.
+- [ ] System remains stable during normal use.
+Not every feature is guaranteed to work. Hardware support depends on the PS4 model, kernel and Linux distribution.
+
+
+8. Troubleshooting
+Linux does not boot
+Possible causes:
+- Incorrect payload.
+- Incompatible kernel or initramfs.
+- Incorrect installation files.
+- Unsupported firmware combination.
+- Incorrect boot configuration.
+What to do:
+1. Verify the PS4 firmware.
+2. Check that the payload matches your firmware.
+3. Verify that the kernel and initramfs belong to the same compatible release.
+4. Recheck the installation files.
+
+
+5. Try booting again.
+External storage is not detected
+Possible causes:
+- Faulty USB cable.
+- Insufficient power.
+- Unsupported partition layout.
+- Incorrect filesystem.
+- Damaged external storage.
+
+What to do:
+1. Try another USB port.
+2. Check the external drive on a computer.
+3. Run lsblk if you can access a Linux terminal.
+4. Verify that the partitions are correctly formatted.
+Linux starts but gets stuck
+Possible causes:
+- Incorrect kernel configuration.
+- Incompatible drivers.
+- Corrupted root filesystem.
+- Missing boot files.
+
+What to do:
+1. Check the kernel and initramfs versions.
+2. Verify the root filesystem.
+3. Check the boot configuration.
+4. Reinstall the required files if necessary.
+9. Important notes
+- Do not disconnect external storage while Linux is running.
+- Always shut down Linux properly before removing the drive.
+- Keep a backup of your installation files.
+- Use compatible PS4 Linux payloads and kernels.
+- Do not assume every PS4 model supports the same installation method.
+- Installation scripts and commands may differ between Linux releases.
+
+To shut down Linux safely:
+sudo poweroff
